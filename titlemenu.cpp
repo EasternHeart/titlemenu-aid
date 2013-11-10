@@ -119,7 +119,13 @@ TitleMenuEffect::TitleMenuEffect()
 	}
 	
 	reconfigure(ReconfigureAll);
-	connect(effects,SIGNAL(windowFinishUserMovedResized(KWin::EffectWindow*)),this,SLOT(windowFinishUserMovedResized(KWin::EffectWindow*)));
+	connect(effects,SIGNAL(windowFinishUserMovedResized(KWin::EffectWindow*)),
+		this,SLOT(windowFinishUserMovedResized(KWin::EffectWindow*)));
+	connect(effects,SIGNAL(windowStepUserMovedResized(KWin::EffectWindow*,const QRect&)),
+		this,SLOT(windowStepUserMovedResized(KWin::EffectWindow*,const QRect&)));
+	connect(effects,SIGNAL(windowMaximizedStateChanged(KWin::EffectWindow*,bool,bool)),
+		this,SLOT(windowMaximizedStateChanged(KWin::EffectWindow*,bool,bool)));
+
 }
 
 TitleMenuEffect::~TitleMenuEffect()
@@ -192,6 +198,27 @@ void TitleMenuEffect::updateTitlebarPosition(EffectWindow* c)
 	}
 // 	m_moving = false;
 }
+
+void TitleMenuEffect::updateTitlebarPosition(EffectWindow* c, const QRect &r)
+{	
+	if(m_alwaysShow) {
+		m_menuBar->show();
+	} else {
+		m_menuBar->hide();
+	}
+	if(!m_moving) {
+		int x = r.topLeft().x();
+		int y = r.topLeft().y();
+		int w = r.width();
+		int h = r.height() - c->contentsRect().height();
+		if(w > 0 && h > 0) {
+			m_titlebar = QRect(x, y, w, h);
+			updateMenuPosition();
+		}
+	}
+// 	m_moving = false;
+}
+
 
 void TitleMenuEffect::windowActivated(EffectWindow* c)
 {
@@ -401,7 +428,18 @@ void TitleMenuEffect::updateActiveWinId()
 
 void TitleMenuEffect::windowFinishUserMovedResized(EffectWindow *w)
 {
-	qDebug() << "windowFinishUserMovedResized";
+//	qDebug() << "windowFinishUserMovedResized";
+	updateTitlebarPosition(w);
+}
+
+void TitleMenuEffect::windowStepUserMovedResized(EffectWindow *w, const QRect &geometry)
+{
+//	qDebug() << "TitleMenuEffect::windowStepUserMovedResized";
+	updateTitlebarPosition(w,geometry);
+}
+
+void TitleMenuEffect::windowMaximizedStateChanged(KWin::EffectWindow *w, bool horizontal, bool vertical)
+{
 	updateTitlebarPosition(w);
 }
 

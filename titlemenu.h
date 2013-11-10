@@ -69,6 +69,7 @@ private:
 	QMenu* menuForWinId(WId) const;
 	void updateMenuPosition();
 	void updateTitlebarPosition(EffectWindow* c);
+	void updateTitlebarPosition(EffectWindow* c,const QRect &r);
 	void fillMap(QVariantMap* map, QList<QAction*> actions);
 	QVariant variantFromMenu(QMenu* menu);
 	
@@ -89,6 +90,8 @@ private Q_SLOTS:
 	void slotActionActivationRequested(QAction* action);
 	void updateActiveWinId();
 	void windowFinishUserMovedResized(KWin::EffectWindow *w);
+	void windowStepUserMovedResized(KWin::EffectWindow *w, const QRect &geometry);
+	void windowMaximizedStateChanged(KWin::EffectWindow *w, bool horizontal, bool vertical);
 };
 
 extern KWIN_EXPORT EffectsHandler* effects;
