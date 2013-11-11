@@ -45,11 +45,7 @@ class TitleMenuEffect
 public:
     TitleMenuEffect();
     virtual ~TitleMenuEffect();
-    virtual void mouseChanged(const QPoint& newM, const QPoint& /*oldM*/,
-                              Qt::MouseButtons /*newB*/, Qt::MouseButtons /*oldB*/,
-                              Qt::KeyboardModifiers /*newMod*/, Qt::KeyboardModifiers /*oldMod*/);
-	virtual void windowActivated(EffectWindow *c);
-	virtual void windowMoveResizeGeometryUpdate(EffectWindow *c, const QRect &/*geometry*/);
+    	virtual void windowMoveResizeGeometryUpdate(EffectWindow *c, const QRect &/*geometry*/);
 	virtual void windowUserMovedResized(EffectWindow *c, bool first, bool last);
 	virtual void reconfigure(ReconfigureFlags);
 	
@@ -92,6 +88,13 @@ private Q_SLOTS:
 	void windowFinishUserMovedResized(KWin::EffectWindow *w);
 	void windowStepUserMovedResized(KWin::EffectWindow *w, const QRect &geometry);
 	void windowMaximizedStateChanged(KWin::EffectWindow *w, bool horizontal, bool vertical);
+	void windowActivated(KWin::EffectWindow *w);
+	void mouseChanged(const QPoint& newM, const QPoint& /*oldM*/,
+                              Qt::MouseButtons /*newB*/, Qt::MouseButtons /*oldB*/,
+                              Qt::KeyboardModifiers /*newMod*/, Qt::KeyboardModifiers /*oldMod*/);
+	void windowAdded(KWin::EffectWindow *w);
+	void windowGeometryShapeChanged(KWin::EffectWindow *w, const QRect &old);
+
 };
 
 extern KWIN_EXPORT EffectsHandler* effects;

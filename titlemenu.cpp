@@ -125,6 +125,16 @@ TitleMenuEffect::TitleMenuEffect()
 		this,SLOT(windowStepUserMovedResized(KWin::EffectWindow*,const QRect&)));
 	connect(effects,SIGNAL(windowMaximizedStateChanged(KWin::EffectWindow*,bool,bool)),
 		this,SLOT(windowMaximizedStateChanged(KWin::EffectWindow*,bool,bool)));
+	connect(effects,SIGNAL(windowActivated(KWIN::EffectWindow*)),
+		this,SLOT(windowActivated(KWIN::EffectWindow*)));
+	connect(effects,
+		SIGNAL(mouseChanged(const QPoint&,const QPoint&,Qt::MouseButtons,Qt::MouseButtons,Qt::KeyboardModifiers,Qt::KeyboardModifiers)),
+		this,
+		SLOT(mouseChanged(const QPoint&,const QPoint&,Qt::MouseButtons,Qt::MouseButtons,Qt::KeyboardModifiers,Qt::KeyboardModifiers)));
+	connect(effects,SIGNAL(windowAdded(KWin::EffectWindow*)),
+		this,SLOT(windowAdded(KWin::EffectWindow*)));
+	connect(effects,SIGNAL(windowMaximizedStateChanged(KWin::EffectWindow*,const QRect&)),
+		this,SLOT(windowMaximizedStateChanged(KWin::EffectWindow*,const QRect&)));
 
 }
 
@@ -439,6 +449,16 @@ void TitleMenuEffect::windowStepUserMovedResized(EffectWindow *w, const QRect &g
 }
 
 void TitleMenuEffect::windowMaximizedStateChanged(KWin::EffectWindow *w, bool horizontal, bool vertical)
+{
+	updateTitlebarPosition(w);
+}
+
+void TitleMenuEffect::windowAdded(KWin::EffectWindow *w)
+{
+	updateTitlebarPosition(w);
+}
+
+void TitleMenuEffect::windowGeometryShapeChanged(KWin::EffectWindow *w, const QRect &old)
 {
 	updateTitlebarPosition(w);
 }

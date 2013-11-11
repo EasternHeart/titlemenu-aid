@@ -22,6 +22,7 @@
 #define MENUBUTTON_H
 
 #include <Plasma/PushButton>
+#include <QPushButton>
 
 class MenuButton : public Plasma::PushButton
 {
